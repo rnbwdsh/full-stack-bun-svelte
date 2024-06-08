@@ -1,38 +1,13 @@
-# create-svelte
+# Full-stack-bun-pocketbase-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## Requirements
 
-## Creating a project
+This project runs with node.js or bun as a server. You can replace any "bun" statement with "node" in the following.
 
-If you're seeing this, you've probably already done this step. Congrats!
+To install, you just run `bun i`, to start the pocketbase server, run `bun run pocketbase` and to run the main app, run `bun run dev`.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Workarounds
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+As pocketbase exposes itself at port 8090 and ollama exposes itself at port 11434, we need a reverse proxy - which is a feature that sveltekits vite supports via the `vite.config.ts`.
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+The exposed "_" url is 

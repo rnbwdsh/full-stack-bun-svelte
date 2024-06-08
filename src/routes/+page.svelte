@@ -1,48 +1,41 @@
 <script>
+    import "@picocss/pico";
+    import './styles.css';
+    import Sidebar from "../components/Sidebar.svelte";
+    import Login from "../components/Login.svelte";
+    import Footer from "../components/Footer.svelte";
+
+    import {currentUser} from "../db";
+    import Navbar from "../components/Navbar.svelte";
+    import Chat from "../components/Chat.svelte";
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<div class="app">
+    <!-- if not logged in, show login form -->
+    {#if !$currentUser}
+        <Login/>
+    {:else}
+        <Navbar/>
+        <main>
+            <Sidebar/>
+            <Chat/>
+        </main>
+    {/if}
 
-<section>
-	<h1>
-
-		Welcome to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-</section>
+    <Footer/>
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
+    .app {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: var(--p-sma) var(--p-mid);
+    }
 
-	h1 {
-		width: 100%;
-	}
+    main {
+        display: flex;
+        height: calc(100vh - 5.2em);
+    }
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
 </style>
