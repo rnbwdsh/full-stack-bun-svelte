@@ -29,10 +29,10 @@
     }
 </script>
 
-<form on:submit|preventDefault>
+<form class="flex1" on:submit|preventDefault>
     <h1>Login</h1>
-    <input type="text" bind:value={username} placeholder="Username"/>
-    <input type="password" bind:value={password} placeholder="Password"/>
+    <input bind:value={username} placeholder="Username" type="text"/>
+    <input bind:value={password} placeholder="Password" type="password"/>
     <span>
         <button on:click={login}>Login</button>
         <button on:click={register}>Register</button>
@@ -45,8 +45,6 @@
 
 <style>
     form {
-        display: flex;
-        flex: 1;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -58,5 +56,4 @@
         width: 10em;
         align-items: center;
     }
-
 </style>

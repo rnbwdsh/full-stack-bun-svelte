@@ -5,6 +5,15 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		proxy: {
+			// Proxy /ollama/* to Ollama with path rewrite to /api/*
+			'/api/chat': {
+				target: 'http://localhost:11434',
+				changeOrigin: true,
+			},
+			'/api/tags': {
+				target: 'http://localhost:11434',
+				changeOrigin: true,
+			},
 			// Proxy api/collections/* to Pocketbase
 			'/api/': {
 				target: 'http://localhost:8090',
@@ -30,12 +39,6 @@ export default defineConfig({
 					});
 				}
 			},
-			// Proxy /ollama/* to Ollama with path rewrite to /api/*
-			'/ollama/': {
-				target: 'http://localhost:11434',
-				changeOrigin: true,
-			 	rewrite: (path) => path.replace(/^\/ollama/, '/api'),
-			}
 		}
 	}
 });

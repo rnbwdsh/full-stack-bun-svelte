@@ -16,14 +16,15 @@
 </script>
 
 <footer>
+    <span>
     <!-- mention tech stack: SvelteKit backend, Bun server, Ollama llm server, ComfyUi image server, pocketbase database -->
-    <small>Created by Markus Vogl using
-		&#123;
+    Created by Markus Vogl using
+        &#123;
         {#each Object.keys(credits) as key}
-			{key}: <a href={links[key]}>{credits[key]}</a>,&nbsp;
-		{/each}
+            {key}: <a href={links[key]}>{credits[key]}</a>,&nbsp;
+        {/each}
         &#125;
-	</small>
+        </span>
 </footer>
 
 <style>
@@ -33,5 +34,9 @@
         justify-content: center;
         align-items: center;
         padding: var(--p-sma) 0;
+    }
+
+    span {
+        font-size: calc(var(--p-sma) + var(--p-mid));
     }
 </style>

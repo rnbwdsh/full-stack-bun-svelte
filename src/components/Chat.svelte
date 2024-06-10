@@ -1,108 +1,101 @@
 <script lang="ts">
-    import {onMount} from 'svelte';
-    import {enabledModels} from '../store';
-    import ollama from "ollama/browser";
     import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
     import {Fa} from "svelte-fa";
+    import autosize from 'svelte-autosize';
+    import AssistantMessage from "./AssistantMessage.svelte";
+    import {pb} from "../db";
+    import {currentChatId, enabledModels, messagesCache} from "../store";
+    import {afterUpdate, onMount} from "svelte";
 
-    // correct typing for messages: Array {role: assistant | user}, content: string}
-    let messages: {role: "assistant" | "user", content: string}[] = [];
-    let nextMessage = "reply 'test'";
+    currentChatId.subscribe(refreshMessages);
 
-    async function chat() {
-        messages.push({role: "user", content: nextMessage});
-        nextMessage = "";  // clear the input
-        messages = [...messages];  // trigger reactivity
-        // get the first enabledModel
-        const model = Object.keys($enabledModels)[0];
-        const response = await ollama.chat({model, messages, stream: true});
-        let lastMessage = {role: "assistant", content: ""};
-        messages.push(lastMessage)
-        for await (const resp of response) {
-            const message = resp.message;
-            lastMessage.content += message.content
-            messages = [...messages];  // trigger reactivity
-            if(resp.done) break;
+    function refreshMessages(id) {
+        pb.collection("messages").getFullList({sort: "created", filter: "chat='"+id+"'"}).then((res) => {
+            $messagesCache = res;
+        });
+    }
+
+    async function sendChat(event: Event) {
+        const form = event.target as HTMLFormElement;
+        const input = form.querySelector('textarea') as HTMLTextAreaElement;
+        const content = input?.value.trim();
+        if (!content || !enabledModels) return;
+
+        const message = {role: "user", content: input?.value.trim(), chat: $currentChatId}
+        $messagesCache = [...$messagesCache, message];
+        input.value = "";
+        input.dispatchEvent(new Event('input'));  // trigger autosize
+
+        // insert in the background
+        pb.collection("messages").create(message).then();
+        $messagesCache = [...$messagesCache, {role: "assistant", content: "", messages: $messagesCache, chat: $currentChatId, other: {}}];
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+        const textarea = event.target as HTMLTextAreaElement;
+        const form = textarea.form as HTMLFormElement;
+        if (event.key == "Enter" && textarea.value.at(textarea.value.length - 1) == "\n") {
+            event.preventDefault();  // no need to attach a newline
+            form.querySelector('button')?.click();
         }
-        console.log(messages);
+    }
+
+    // bottom scroll magic
+    let toScroll;
+    onMount(scrollToBottom);
+    afterUpdate(scrollToBottom);
+    async function scrollToBottom() {
+        toScroll.scroll({ top: 100000, behavior: 'smooth' });
     }
 </script>
 
-<section>
-    <div class="chat-history">
-        <card class="user">
-            Hi! I have a question.
-        </card>
-        <card class="assistant">
-            Hello! How can I help you today?
-        </card>
-        {#each messages as message}
-            <card class={message.role}>
-                {message.content}
-            </card>
+<section class="flex1c">
+    <div class="chat-history flex1c" bind:this={toScroll}>
+        {#each $messagesCache as message}
+            {#if message.role === "assistant"}
+                <AssistantMessage {message} {scrollToBottom}/>
+            {:else}
+                <card class="bubble-chat">
+                    {message.content}
+                </card>
+            {/if}
         {/each}
     </div>
-    <fieldset role="group">
-        <input placeholder="Type your message here" type="text" bind:value={nextMessage}/>
-        <button on:click={chat}>
-            <Fa icon={faPaperPlane}/>
-        </button>
-    </fieldset>
+
+    <form on:submit|preventDefault={sendChat}>
+        <fieldset role="group">
+            <textarea on:keydown={handleKeyDown} placeholder="Type your message here" rows="1" use:autosize/>
+            <button>
+                <Fa icon={faPaperPlane}/>
+            </button>
+        </fieldset>
+    </form>
 </section>
 
 <style>
-    .assistant {
-        text-align: left;
-        align-self: start;
-        background-color: var(--pico-primary-background);
-        border-color: var(--pico-primary);
-        border-top-left-radius: 0;
-    }
-
-    .user {
+    card {
         text-align: right;
         align-self: end;
-        background-color: var(--pico-secondary-background);
+        background-color: color-mix(in lch, var(--pico-secondary-background) 60%, var(--pico-background-color));
         border-color: var(--pico-secondary);
         border-top-right-radius: 0;
     }
 
-    card {
-        padding: var(--p-mid);
-        margin: 0;
-        width: fit-content;
-        border: calc(var(--pico-border-width)*2) solid;
-        border-radius: calc(var(--pico-border-radius)*4);
-        color: var(--pico-primary-inverse);
-    }
-
     .chat-history {
-        display: flex;
-        flex-direction: column;
+        max-height: calc(100vh - 5rem - 6 * var(--p-sma) - 2 * var(--p-mid));
         gap: 0.5rem;
         padding: 0.5rem;
-        margin: 0;
+        overflow: auto;
+    }
+
+    .chat-history,
+    form {
         width: 100%;
     }
 
-    section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        /* center vertically and horicontally */
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 0;
-        margin-bottom: 0;
-    }
-
+    section,
     fieldset {
         padding-bottom: 0;
         margin-bottom: 0;
-    }
-
-    .chat-history {
-        flex: 1;
-        overflow-y: auto;
     }
 </style>

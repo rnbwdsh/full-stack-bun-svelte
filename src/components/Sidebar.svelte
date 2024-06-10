@@ -1,17 +1,12 @@
 <script>
     import {onMount} from 'svelte';
-    import {enabledModels, sidebarOpen} from '../store';
+    import {enabledModels, settings} from '../store';
 
     let tags = [];
-    let open = $sidebarOpen;
-
-    // listen to sidebarOpen (boolean) and change the class of the aside element to open or not
-    sidebarOpen.subscribe(value => open = value);
 
     onMount(async () => {
-
         // fetch the tags from the server
-        const response = await fetch("ollama/tags");
+        const response = await fetch("api/tags");
         tags = await response.json()
             .then(data => data.models)
             .then(models => models.sort((a, b) => formatTitle(a.name).localeCompare(formatTitle(b.name))))
@@ -27,7 +22,7 @@
     }
 </script>
 
-<aside class:open>
+<aside class:open={$settings.sidebarOpen}>
     <ol>
         {#each tags as tag}
             <li title={formatDetails(tag.details)}>
@@ -64,6 +59,10 @@
     li {
         padding: 0 0;
         margin: 0;
+    }
+
+    label {
+        margin-bottom: 0;
     }
 
     input {
