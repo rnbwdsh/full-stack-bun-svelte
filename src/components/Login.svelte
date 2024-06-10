@@ -10,7 +10,7 @@
 		try {
 			await fn();
 		} catch (e) {
-			error = e.message;
+			error = e.message + " Hint: len(password) >= 5";
 			setTimeout(() => (error = ''), 3000);
 		}
 	}
