@@ -1,24 +1,27 @@
 /// <reference path="../pb_data/types.d.ts" />
-migrate((db) => {
-  const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("w5h0ibrkpivy4qt")
+migrate(
+	(db) => {
+		const dao = new Dao(db);
+		const collection = dao.findCollectionByNameOrId('w5h0ibrkpivy4qt');
 
-  collection.listRule = ""
-  collection.viewRule = ""
-  collection.createRule = ""
-  collection.updateRule = ""
-  collection.deleteRule = ""
+		collection.listRule = '';
+		collection.viewRule = '';
+		collection.createRule = '';
+		collection.updateRule = '';
+		collection.deleteRule = '';
 
-  return dao.saveCollection(collection)
-}, (db) => {
-  const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("w5h0ibrkpivy4qt")
+		return dao.saveCollection(collection);
+	},
+	(db) => {
+		const dao = new Dao(db);
+		const collection = dao.findCollectionByNameOrId('w5h0ibrkpivy4qt');
 
-  collection.listRule = null
-  collection.viewRule = null
-  collection.createRule = null
-  collection.updateRule = null
-  collection.deleteRule = null
+		collection.listRule = null;
+		collection.viewRule = null;
+		collection.createRule = null;
+		collection.updateRule = null;
+		collection.deleteRule = null;
 
-  return dao.saveCollection(collection)
-})
+		return dao.saveCollection(collection);
+	}
+);

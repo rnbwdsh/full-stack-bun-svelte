@@ -1,24 +1,24 @@
 :root {
-    --p-sma: 0.2em;
-    --p-mid: 0.5em;
+	--p-sma: 0.2em;
+	--p-mid: 0.5em;
 }
 
 .flex1 {
-    display: flex;
-    flex: 1;
+	display: flex;
+	flex: 1;
 }
 
 .flex1c {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
 }
 
 .bubble-chat {
-    padding: 0.5em;
-    margin: 0;
-    width: fit-content;
-    color: var(--pico-primary-inverse);
-    border: calc(var(--pico-border-width) * 2) solid;
-    border-radius: calc(var(--pico-border-radius) * 4);
+	padding: 0.5em;
+	margin: 0;
+	width: fit-content;
+	color: var(--pico-primary-inverse);
+	border: calc(var(--pico-border-width) * 2) solid;
+	border-radius: calc(var(--pico-border-radius) * 4);
 }

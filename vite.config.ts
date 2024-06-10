@@ -4,15 +4,16 @@ import { sveltekit } from '@sveltejs/kit/vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
+		port: 1337,
 		proxy: {
 			// Proxy /ollama/* to Ollama with path rewrite to /api/*
 			'/api/chat': {
 				target: 'http://localhost:11434',
-				changeOrigin: true,
+				changeOrigin: true
 			},
 			'/api/tags': {
 				target: 'http://localhost:11434',
-				changeOrigin: true,
+				changeOrigin: true
 			},
 			// Proxy api/collections/* to Pocketbase
 			'/api/': {
@@ -27,7 +28,7 @@ export default defineConfig({
 					});
 				}
 			},
-			"/_": {
+			'/_/': {
 				target: 'http://localhost:8090',
 				changeOrigin: true,
 				configure: (proxy, options) => {
@@ -38,7 +39,7 @@ export default defineConfig({
 						}
 					});
 				}
-			},
+			}
 		}
 	}
 });
