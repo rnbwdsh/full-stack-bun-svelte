@@ -1,5 +1,7 @@
 # Full-stack-bun-pocketbase-svelte
 
+[demo.webm](https://github.com/rnbwdsh/full-stack-bun-svelte/assets/9084941/80ddc3dd-0e4d-4d8b-a395-1903f2793133)
+
 ## Requirements
 
 This project runs with node.js or bun as a server. You can replace any "bun" statement with "node" in the following.
@@ -41,15 +43,19 @@ The app will automatically reverse-proxy via vite to the pocketbase server and t
 
 * **Author**: Markus V.
 
-* **Señor lecturer**: Markus W. y ChatGPT4
+* **Señor lecturer**: Dr. Markus W. y ChatGPT4
 
 * **Lecture de señor**: Full stack web development @ JKU Linz
+
+* **Coding time**: Roughly 30-40h with no prior knowledge of SvelteKit / pocketbase
 
 * **License**: Create commons Zero v1.0 Universal. You can do whatever you want with this code. It's yours now. Enjoy!
 
 * **Inspiration**: Ollama WebUI aka (Open WebUI)[https://github.com/open-webui/open-webui]
 
-## Demo
+* **Video**: Shot in real time, Geforce 2070S, i7-13700, Firefox, OBS
+
+## Screenshots
 
 The app has multiple layouts to display the multi-chat feature, in addition to a compact mode.
 
@@ -58,8 +64,6 @@ The app has multiple layouts to display the multi-chat feature, in addition to a
 ![layout-1-0](demo/layout-1-0.png)
 ![layout-1-1](demo/layout-1-1.png)
 
-Here is the bright mode for insane people
+Bright mode
 
 ![layout-bright](demo/layout-bright.png)
-
-<video source="demo/demo.mkv" controls></video>
