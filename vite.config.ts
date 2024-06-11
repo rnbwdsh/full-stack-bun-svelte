@@ -9,7 +9,12 @@ export default defineConfig({
 			// Proxy /ollama/* to Ollama with path rewrite to /api/*
 			'/api/chat': {
 				target: 'http://localhost:11434',
-				changeOrigin: true
+				configure: (proxy, options) => {
+					proxy.on('proxyReq', (proxyReq, req, res) => {
+						// Forward the Authorization header
+						proxyReq.setHeader('Origin', 'http://127.0.0.1:1337');
+					});
+				}
 			},
 			'/api/tags': {
 				target: 'http://localhost:11434',

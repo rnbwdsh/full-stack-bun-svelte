@@ -9,7 +9,7 @@ export const enabledModels = persisted(
 		beforeWrite: (value) => Object.fromEntries(Object.entries(value).filter(([, value]) => value))
 	}
 );
-export const messagesCache = persisted('messages', {});
+export const messagesCache = persisted('messages', []);
 export const settings = persisted('uiSettings', {
 	darkMode: true,
 	sidebarOpen: false,

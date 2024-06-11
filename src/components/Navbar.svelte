@@ -23,7 +23,7 @@
     import ("@picocss/pico/css/pico."+randColor+".css");
     */
 
-	let chats: Array<{ id: string; title: string }> = [];
+	let chats: { id: string; title: string }[] = [];
 
 	settings.subscribe((value) => {
 		document.querySelector('html')?.setAttribute('data-theme', value.darkMode ? 'dark' : 'light');
@@ -37,7 +37,7 @@
 				if (chats.length == 0) {
 					await createChat();
 				}
-				if ($currentChatId == null || !chats.find((chat) => chat.id === $currentChatId)) {
+				if ($currentChatId == null || !chats.find((chat) => chat.id === $currentChatId) && chats.length) {
 					$currentChatId = chats[0].id;
 				}
 			});
@@ -66,6 +66,11 @@
 
 	function deleteChat() {
 		pb.collection('chats').delete($currentChatId).then(reload);
+	}
+
+	function logout() {
+		pb.authStore.clear();
+		localStorage.clear();
 	}
 </script>
 
@@ -111,7 +116,7 @@
 			<button class="outline" disabled>
 				{$currentUser.username}
 			</button>
-			<button class="" on:click={() => pb.authStore.clear()}>
+			<button class="" on:click={logout}>
 				<Fa icon={faSignOut} />
 			</button>
 		</fieldset>

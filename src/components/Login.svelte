@@ -10,19 +10,25 @@
 		try {
 			await fn();
 		} catch (e) {
-			error = e.message + " Hint: len(password) >= 5";
+			error = e.message;
 			setTimeout(() => (error = ''), 3000);
 		}
 	}
 
 	async function login() {
 		await handleError(async () => {
+			if ( password.length < 5 ) {
+				throw new Error('Password must be at least 5 characters long');
+			}
 			await pb.collection('users').authWithPassword(username, password);
 		});
 	}
 
 	async function register() {
 		await handleError(async () => {
+			if ( password.length < 5 ) {
+				throw new Error('Password must be at least 5 characters long');
+			}
 			await pb
 				.collection('users')
 				.create({ username, password, passwordConfirm: password, name: username });

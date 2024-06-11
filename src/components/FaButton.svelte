@@ -2,7 +2,7 @@
 	import Fa from 'svelte-fa';
 	import { settings } from '../store';
 
-	export let setting: string;
+	export let setting: string = null;
 	export let icon;
 	export let secondaryIcon = null;
 	export let onClick = null;

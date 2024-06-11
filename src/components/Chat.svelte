@@ -24,7 +24,7 @@
 		if (!content || !enabledModels) return;
 
 		const message = { role: 'user', content: input?.value.trim(), chat: $currentChatId };
-		$messagesCache = [...$messagesCache, message];
+		$messagesCache = [...$messagesCache, message]; // triggers reactivity
 		input.value = '';
 		input.dispatchEvent(new Event('input')); // trigger autosize
 

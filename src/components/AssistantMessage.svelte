@@ -2,9 +2,8 @@
 <script lang="ts">
 	import SvelteMarkdown from 'svelte-markdown';
 	import { afterUpdate, onMount } from 'svelte';
-	import { enabledModels, settings } from '../store';
+	import { enabledModels, settings, messagesCache } from '../store';
 	import { Ollama } from 'ollama/browser';
-	import { page } from '$app/stores';
 	import { pb } from '../db';
 
 	export let message;
@@ -14,7 +13,7 @@
 	onMount(async () => {
 		if (message.content) return;
 
-		const ollama = new Ollama({ url: $page.url });
+		const ollama = new Ollama({ host: window.location.origin });
 		const messages = message.messages;
 		delete message.messages;
 
@@ -27,7 +26,9 @@
 			}
 		}
 
-		await pb.collection('messages').create(message);
+		pb.collection('messages').create(message).then();
+		// replace last in $messagesCache with message
+		$messagesCache = [...$messagesCache.slice(0, -1), message];
 	});
 
 	async function queryModel(ollama, model, messages, appendToMessage) {
