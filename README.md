@@ -16,7 +16,7 @@ The app expects you to have a pocketbase server running (linux binary in the /pb
 
 If they run at any other port or not localhost, change the vite.config.ts. This also by default exposes the pocketbase admin ui at `/_/`. This app runs at port 1337 on http.
 
-You should also have some models in ollama installed, i.e. llama2, llama3, gemma... you can do this with `ollama pull llamaa3`.
+You should also have some models in ollama installed, i.e. llama2, llama3, gemma... you can do this with `ollama pull llama3`.
 
 The app will automatically reverse-proxy via vite to the pocketbase server and the ollama server, so you only have to expose the vite port.
 
@@ -51,7 +51,7 @@ The app will automatically reverse-proxy via vite to the pocketbase server and t
 
 * **License**: Create commons Zero v1.0 Universal. You can do whatever you want with this code. It's yours now. Enjoy!
 
-* **Inspiration**: Ollama WebUI aka (Open WebUI)[https://github.com/open-webui/open-webui]
+* **Inspiration**: Ollama WebUI aka [Open WebUI](https://github.com/open-webui/open-webui)
 
 * **Video**: Shot in real time, Geforce 2070S, i7-13700, Firefox, OBS
 
